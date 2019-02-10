@@ -1,27 +1,72 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
-import * as vscode from 'vscode';
+import * as vscode from "vscode";
 
-// this method is called when your extension is activated
-// your extension is activated the very first time the command is executed
-export function activate(context: vscode.ExtensionContext) {
+const configNamespace = "wotan";
+const configOptions = ["displayErrorsAsWarnings"];
 
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-		console.log('Congratulations, your extension "vscode-plugin" is now active!');
+export async function activate(context: vscode.ExtensionContext) {
+    // Get the TS extension
+    const tsExtension = vscode.extensions.getExtension(
+        "vscode.typescript-language-features"
+    );
+    if (!tsExtension) {
+        return;
+    }
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	let disposable = vscode.commands.registerCommand('extension.helloWorld', () => {
-		// The code you place here will be executed every time your command is executed
+    await tsExtension.activate();
 
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World!');
-	});
+    // Get the API from the TS extension
+    if (!tsExtension.exports || !tsExtension.exports.getAPI) {
+        return;
+    }
 
-	context.subscriptions.push(disposable);
+    const api = tsExtension.exports.getAPI(0);
+    if (!api) {
+        return;
+    }
+
+    vscode.workspace.onDidChangeConfiguration(
+        e => {
+            if (e.affectsConfiguration(configNamespace)) {
+                syncConfig(api);
+            }
+        },
+        undefined,
+        context.subscriptions
+    );
+
+    syncConfig(api);
 }
 
-// this method is called when your extension is deactivated
-export function deactivate() {}
+function syncConfig(api: {
+    configurePlugin(name: string, config: Record<string, unknown>): void;
+}) {
+    api.configurePlugin(
+        "@fimbul/mithotyn",
+        mapConfig(vscode.workspace.getConfiguration(configNamespace))
+    );
+}
+
+function mapConfig(config: vscode.WorkspaceConfiguration) {
+    const result: Record<string, unknown> = {};
+
+    for (const optionName of configOptions) {
+        const option = config.inspect<unknown>(optionName);
+        if (!option) {
+            continue;
+        }
+        if (
+            option.globalValue === undefined &&
+            option.workspaceFolderValue === undefined &&
+            option.workspaceValue === undefined
+        ) {
+            continue;
+        }
+        const value = config.get<unknown>(optionName);
+        if (value === undefined) {
+            continue;
+        }
+        result[optionName] = value;
+    }
+
+    return result;
+}

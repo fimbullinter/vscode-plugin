@@ -2,7 +2,7 @@
 # yarn lockfile v1
 
 
-"@fimbul/mithotyn@0.18.0":
+"@fimbul/mithotyn@*":
   version "0.18.0"
   resolved "https://registry.yarnpkg.com/@fimbul/mithotyn/-/mithotyn-0.18.0.tgz#df4b811ebba6f1b97511a4c393bed174ac8a84f8"
   integrity sha512-1J8vNuTdjjxFk+5/C9oX26dbcmXA/2CVqy2Sfq7pZgy4XTwis7Ewdsxp2jVtXPi8vmClYE9HThOf3IrQC/aBCw==

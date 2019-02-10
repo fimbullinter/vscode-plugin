@@ -39,7 +39,8 @@
 			"properties": {
 				"wotan.displayErrorsAsWarnings": {
 					"type": "boolean",
-					"description": "Display errors as warnings to get green squiggles instead of red. This doesn't affect other severities."
+          "description": "Display errors as warnings to get green squiggles instead of red. This doesn't affect other severities.",
+          "default": false
 				}
 			}
 		}
@@ -59,6 +60,6 @@
 		"vscode": "^1.1.28"
 	},
 	"dependencies": {
-		"@fimbul/mithotyn": "0.18.0"
+		"@fimbul/mithotyn": "*"
 	}
 }
