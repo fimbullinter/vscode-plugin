@@ -31,7 +31,7 @@ export async function activate(context: vscode.ExtensionContext) {
             }
         },
         undefined,
-        context.subscriptions
+        context.subscriptions,
     );
 
     syncConfig(api);
@@ -40,14 +40,17 @@ export async function activate(context: vscode.ExtensionContext) {
 function syncConfig(api: {
     configurePlugin(name: string, config: Record<string, unknown>): void;
 }) {
-    api.configurePlugin(
-        "@fimbul/mithotyn",
-        mapConfig(vscode.workspace.getConfiguration(configNamespace))
-    );
+    const config = mapConfig(vscode.workspace.getConfiguration(configNamespace));
+    if (config) {
+        api.configurePlugin(
+            "@fimbul/mithotyn",
+            config,
+        );
+    }
 }
 
 function mapConfig(config: vscode.WorkspaceConfiguration) {
-    const result: Record<string, unknown> = {};
+    let result: Record<string, unknown> | undefined;
 
     for (const optionName of configOptions) {
         const option = config.inspect<unknown>(optionName);
@@ -65,7 +68,7 @@ function mapConfig(config: vscode.WorkspaceConfiguration) {
         if (value === undefined) {
             continue;
         }
-        result[optionName] = value;
+        (result || (result = {}))[optionName] = value;
     }
 
     return result;
