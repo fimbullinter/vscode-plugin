@@ -1,0 +1,64 @@
+{
+	"name": "vscode-plugin",
+	"displayName": "Wotan",
+	"description": "Fimbullinter for Visual Studio Code",
+	"version": "0.0.1",
+	"private": true,
+	"publisher": "fimbullinter",
+	"icon": "docs/icon.png",
+	"license": "MIT",
+	"repository": {
+        "url": "https://github.com/fimbullinter/vscode-plugin.git"
+    },
+    "bugs": {
+        "url": "https://github.com/fimbullinter/vscode-plugin/issues"
+	},
+	"engines": {
+		"vscode": "^1.30.0"
+	},
+	"categories": [
+		"Programming Languages"
+	],
+	"activationEvents": [
+		"onLanguage:javascript",
+		"onLanguage:javascriptreact",
+		"onLanguage:typescript",
+		"onLanguage:typescriptreact"
+	],
+	"main": "./out/extension.js",
+	"contributes": {
+		"typescriptServerPlugins": [
+			{
+				"name": "@fimbul/mithotyn",
+				"enableForWorkspaceTypeScriptVersions": true
+			}
+		],
+		"configuration": {
+			"type": "object",
+			"title": "Wotan",
+			"properties": {
+				"wotan.displayErrorsAsWarnings": {
+					"type": "boolean",
+					"description": "Display errors as warnings to get green squiggles instead of red. This doesn't affect other severities."
+				}
+			}
+		}
+	},
+	"scripts": {
+		"vscode:prepublish": "yarn run compile",
+		"compile": "tsc -p ./",
+		"watch": "tsc -watch -p ./",
+		"postinstall": "node ./node_modules/vscode/bin/install",
+		"test": "yarn run compile && node ./node_modules/vscode/bin/test"
+	},
+	"devDependencies": {
+		"@types/mocha": "^2.2.42",
+		"@types/node": "^10.12.21",
+		"tslint": "^5.12.1",
+		"typescript": "^3.3.1",
+		"vscode": "^1.1.28"
+	},
+	"dependencies": {
+		"@fimbul/mithotyn": "0.18.0"
+	}
+}
