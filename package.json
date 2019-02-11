@@ -2,7 +2,7 @@
 	"name": "vscode-plugin",
 	"displayName": "Wotan",
 	"description": "Fimbullinter for Visual Studio Code",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"private": true,
 	"publisher": "fimbullinter",
 	"icon": "docs/icon.png",

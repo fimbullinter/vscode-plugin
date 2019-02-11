@@ -16,6 +16,8 @@ You only need this extension if you use the version of TypeScript that comes bun
 
 To correctly configure the plugin you need at least `vscode@^1.30.0` and `typescript@^3.2.1`.
 
+You need to install the actual linter [`@fimbul/wotan`](https://github.com/fimbullinter/wotan/blob/master/packages/wotan/README.md) as a (dev)dependency in your workspace. Global installations are not supported.
+
 ## Extension Settings
 
 This extension uses the same configuration options as [`@fimbul/mithotyn`](https://github.com/fimbullinter/wotan/blob/master/packages/mithotyn/README.md#configuration-options).
