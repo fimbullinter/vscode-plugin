@@ -1,34 +1,29 @@
-import * as vscode from "vscode";
+import * as vscode from 'vscode';
 
-const configNamespace = "wotan";
-const configOptions = ["displayErrorsAsWarnings"];
+const configNamespace = 'wotan';
+const configOptions = ['displayErrorsAsWarnings'];
 
 export async function activate(context: vscode.ExtensionContext) {
-    // Get the TS extension
     const tsExtension = vscode.extensions.getExtension(
-        "vscode.typescript-language-features"
+        'vscode.typescript-language-features',
     );
-    if (!tsExtension) {
+    if (!tsExtension)
         return;
-    }
 
-    await tsExtension.activate();
+    const exports = await tsExtension.activate();
 
     // Get the API from the TS extension
-    if (!tsExtension.exports || !tsExtension.exports.getAPI) {
+    if (!exports || !exports.getAPI)
         return;
-    }
 
-    const api = tsExtension.exports.getAPI(0);
-    if (!api) {
+    const api = exports.getAPI(0);
+    if (!api)
         return;
-    }
 
     vscode.workspace.onDidChangeConfiguration(
-        e => {
-            if (e.affectsConfiguration(configNamespace)) {
+        (e) => {
+            if (e.affectsConfiguration(configNamespace))
                 syncConfig(api);
-            }
         },
         undefined,
         context.subscriptions,
@@ -41,12 +36,11 @@ function syncConfig(api: {
     configurePlugin(name: string, config: Record<string, unknown>): void;
 }) {
     const config = mapConfig(vscode.workspace.getConfiguration(configNamespace));
-    if (config) {
+    if (config)
         api.configurePlugin(
-            "@fimbul/mithotyn",
+            '@fimbul/mithotyn',
             config,
         );
-    }
 }
 
 function mapConfig(config: vscode.WorkspaceConfiguration) {
@@ -54,20 +48,17 @@ function mapConfig(config: vscode.WorkspaceConfiguration) {
 
     for (const optionName of configOptions) {
         const option = config.inspect<unknown>(optionName);
-        if (!option) {
+        if (!option)
             continue;
-        }
         if (
             option.globalValue === undefined &&
             option.workspaceFolderValue === undefined &&
             option.workspaceValue === undefined
-        ) {
+        )
             continue;
-        }
         const value = config.get<unknown>(optionName);
-        if (value === undefined) {
+        if (value === undefined)
             continue;
-        }
         (result || (result = {}))[optionName] = value;
     }
 

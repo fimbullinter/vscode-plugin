@@ -8,3 +8,6 @@ vsc-extension-quickstart.md
 **/tslint.json
 **/*.map
 **/*.ts
+**/.*.yaml
+/yarn.lock
+*.vsix
