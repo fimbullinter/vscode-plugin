@@ -26,4 +26,4 @@ If you don't add any configuration through VSCode it uses the plugin config from
 
 This extension has the following settings:
 
-* `wotan.displayErrorsAsWarnings`: Display errors as warnings to get green squiggles instead of red. This doesn't affect other severities.
+* `wotan.displayErrorsAsWarnings`: Display errors as warnings to get yellow squiggles instead of red. This doesn't affect other severities.
